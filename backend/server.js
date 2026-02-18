@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
+app.head('/', (req, res) => {
+    res.status(200).end();
+});
+
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/issues', require('./routes/issueRoutes'));
