@@ -1,6 +1,5 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const cors = require('cors');
 const connectDB = require('./config/db');
 
 dotenv.config();
@@ -19,18 +18,25 @@ app.use((req, res, next) => {
     next();
 });
 
-// CORS Configuration
-const corsOptions = {
-    origin: ['http://localhost:5173', 'https://work.xplnhub.tech', 'http://localhost:5001'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-};
+// Manual CORS Middleware
+app.use((req, res, next) => {
+    const allowedOrigins = ['http://localhost:5173', 'https://work.xplnhub.tech', 'http://localhost:5001'];
+    const origin = req.headers.origin;
 
-app.use(cors(corsOptions));
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
 
-// Handle preflight requests explicitly
-app.options('*', cors(corsOptions));
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
+    next();
+});
 
 app.use(express.json());
 
