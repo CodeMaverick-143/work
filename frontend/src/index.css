@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@theme {
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Inter', sans-serif;
+    --color-paper-bg: #f8f9fa;
+    --color-paper-card: #ffffff;
+    --color-paper-primary: #1e293b;
+    --color-paper-secondary: #64748b;
+}
+
+@layer base {
+    body {
+        background-color: var(--color-paper-bg);
+        color: var(--color-paper-primary);
+        font-family: var(--font-sans);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-serif);
+        color: var(--color-paper-primary);
+    }
+}
+
+@layer components {
+    .btn-primary {
+        @apply bg-slate-800 text-white px-4 py-2 rounded shadow hover:bg-slate-700 transition duration-200;
+    }
+
+    .card {
+        @apply bg-white p-6 rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition duration-200;
+    }
+}
+
+/* FullCalendar Theme Overrides for Paper Theme */
+.fc {
+    font-family: var(--font-sans);
+    --fc-button-bg-color: #1e293b;
+    --fc-button-border-color: #1e293b;
+    --fc-button-hover-bg-color: #334155;
+    --fc-button-hover-border-color: #334155;
+    --fc-button-active-bg-color: #0f172a;
+    --fc-button-active-border-color: #0f172a;
+    --fc-today-bg-color: #e0e7ff;
+    --fc-border-color: #e2e8f0;
+    --fc-neutral-bg-color: #f8fafc;
+}
+
+.fc-toolbar-title {
+    font-family: var(--font-serif) !important;
+    font-weight: 700 !important;
+    color: var(--color-paper-primary);
+}
+
+.fc-col-header-cell-cushion {
+    color: var(--color-paper-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    padding: 8px 0 !important;
+}
+
+.fc-daygrid-day-number {
+    color: var(--color-paper-primary);
+    font-weight: 500;
+    padding: 8px !important;
+}
+
+.fc-event {
+    border: none !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    padding: 2px 4px;
+}
