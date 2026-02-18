@@ -9,10 +9,29 @@ connectDB();
 
 const app = express();
 
-app.use(cors({
+// Trust proxy for Render deployment
+app.enable('trust proxy');
+
+// Logging Middleware
+app.use((req, res, next) => {
+    console.log(`[Request] ${req.method} ${req.url}`);
+    console.log(`[Origin] ${req.headers.origin}`);
+    next();
+});
+
+// CORS Configuration
+const corsOptions = {
     origin: ['http://localhost:5173', 'https://work.xplnhub.tech', 'http://localhost:5001'],
-    credentials: true
-}));
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests explicitly
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -29,6 +48,10 @@ app.use('/api/issues', require('./routes/issueRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/meetings', require('./routes/meetingRoutes'));
 
+// 404 Handler with CORS headers
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Route not found' });
+});
 
 const PORT = process.env.PORT || 5000;
 
